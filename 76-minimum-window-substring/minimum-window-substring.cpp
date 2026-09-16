@@ -1,44 +1,35 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        int m=s.size();
-        int n=t.size();
-        unordered_map<char,int>tmap;
-        unordered_map<char,int>smap;
-        int start=0;
-        for(int i=0;i<n;i++)tmap[t[i]]++;
-        int l=0,r=0;
-        int cnt=0;
-        int mini=INT_MAX;
-        int len=0;
-        while(r<m){
-           smap[s[r]]++;
-           if(smap[s[r]]<=tmap[s[r]]){
-            cnt++;
-           }
-           while(cnt==n){
-            if(r - l + 1 < mini) {
-                    mini = r - l + 1;
-                    start = l;
-                }
-                if(smap[s[l]] <= tmap[s[l]]) {
-                    cnt--;
-                }
-                smap[s[l]]--;
-                if(smap[s[l]] == 0)
-                    smap.erase(s[l]);
-                l++;
+        int ssize=s.size();
+        int tsize=t.size();
+      unordered_map<char,int>smp;
+      unordered_map<char,int>tmp;
+      for(int i=0;i<tsize;i++)tmp[t[i]]++;
+      int n=tmp.size();
+      int i=0,j=0;
+      int len=0,mini=INT_MAX;
+      int cnt=0;
+      int st=0;
+      while(j<ssize){
+          smp[s[j]]++;
+          len++;
+          //if(smp[s[j]]==tmp[s[j]])cnt++;
+          if(tmp.find(s[j]) != tmp.end() && smp[s[j]] == tmp[s[j]]) cnt++;
+          if(cnt==n){
+            while(i<ssize && cnt==n){
+                 if(len<mini){mini=len;st=i;}
+                smp[s[i]]--;
+               // if(tmp[s[i]]>smp[s[i]])cnt--;
+                if(tmp.find(s[i]) != tmp.end() && smp[s[i]] < tmp[s[i]])  cnt--;
+                len--;
+                if(smp[s[i]]==0)smp.erase(s[i]);
+                i++;
             }
-            r++;
-        }
-
-
-            
-          
-
-        
-        if(mini==INT_MAX) return "";
-
-        return s.substr(start, mini);
+          }
+          j++;
+      }
+      if(mini==INT_MAX) return "";
+      else return s.substr(st,mini);
     }
 };
