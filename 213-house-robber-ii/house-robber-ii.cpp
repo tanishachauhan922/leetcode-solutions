@@ -1,11 +1,13 @@
 class Solution {
-    int solve(vector<int>& temp,vector<int>& dp,int i){
-        if(i<0)return 0;
-        if(dp[i]!=-1)return dp[i];
-        int take=temp[i]+solve(temp,dp,i-2);
-        int nottake=solve(temp,dp,i-1);
-       dp[i]=max(take,nottake);
-       return dp[i];
+    int solve(vector<int>& temp,int prev2,int prev1,int n){
+        for(int i=1;i<temp.size();i++){
+           int take=temp[i]+prev2;
+           int nottake=prev1;
+           int curr=max(take,nottake);
+           prev2=prev1;
+           prev1=curr;
+        }
+        return prev1;
     }
 public:
     int rob(vector<int>& nums) {
@@ -17,10 +19,11 @@ public:
             if(i!=0)temp1.push_back(nums[i]);
             if(i!=n-1)temp2.push_back(nums[i]);
         }
-        vector<int>dp1(temp1.size(),-1);
-        vector<int>dp2(temp2.size(),-1);
-      int case1= solve(temp1,dp1,temp1.size()-1);
-      int case2= solve(temp2,dp2,temp2.size()-1);
+        
+        int prev2=0;
+        
+      int case1= solve(temp1,prev2,temp1[0],temp1.size()-1);
+      int case2= solve(temp2,prev2,temp2[0],temp2.size()-1);
     return max(case1,case2);
     }
 };
