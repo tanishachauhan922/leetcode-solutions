@@ -1,23 +1,22 @@
 class Solution {
-    private:
-   
 public:
     int search(vector<int>& nums, int target) {
         int n=nums.size();
-        int rotated=-1;
-        int s=0,e=n-1;
-        while(s<=e){
-            int mid=s+(e-s)/2;
-            if(nums[mid]==target)return mid;
-           else  if(nums[mid]>=nums[s]){
-                if(target<nums[mid] && target>=nums[s])    e=mid-1;
-                else s=mid+1;
+        int ans=-1;
+        int st=0,e=n-1;
+        while(st<=e){
+            int mid=(st+e)/2;
+            if(nums[mid]==target) return mid;
+            else if(nums[st]<=nums[mid]){
+            if(target>=nums[st] && target<=nums[mid])e=mid;
+            else st=mid+1;
             }
             else{
-                  if(target>nums[mid] && target<=nums[e])    s=mid+1;
-                else e=mid-1;
+                if(target<=nums[e] && target>=nums[mid] )st=mid+1;
+                else e=mid;
             }
+
         }
-        return -1;
+        return ans;
     }
 };
