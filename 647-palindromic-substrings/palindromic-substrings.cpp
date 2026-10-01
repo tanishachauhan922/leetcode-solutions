@@ -1,15 +1,9 @@
 class Solution {
-    private:
-    int check(string s, int l,int r){
-        
+    int count(int st,int e,int n,string s){
         int cnt=0;
-        while( l>=0 && r<s.size() && s[l]==s[r]){
-            //if(s[l]==s[r]){
-                cnt++;
-                l--;
-                r++;
-            
-
+        while(st>=0 && e<n && s[st]==s[e]){
+            st--;e++;
+            cnt++;
         }
         return cnt;
     }
@@ -18,8 +12,8 @@ public:
         int n=s.size();
         int cnt=0;
         for(int i=0;i<n;i++){
-           cnt+=check(s,i,i);
-           cnt+=check(s,i,i+1);
+            cnt+=count(i,i,n,s);
+            cnt+=count(i,i+1,n,s);
         }
         return cnt;
     }
