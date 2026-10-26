@@ -17,7 +17,19 @@ public:
         for(int i=0;i<n;i++)totsum+=nums[i];
         if(totsum%2==1) return false;
         int target=totsum/2;
-        vector<vector<int>>dp(n,vector<int>(target+1,-1));
-        return solve(nums,n,target,dp,n-1);
+        vector<vector<int>>dp(n,vector<int>(target+1,0));
+        // return solve(nums,n,target,dp,n-1);
+        for(int i=0;i<n;i++)dp[i][0]=true;
+        if(nums[0]<=target) dp[0][nums[0]]=true;
+        for(int i=1;i<n;i++){
+            for(int k=1;k<=target;k++){
+                 bool nottake=dp[i-1][k];
+                 bool take=false;
+                 if(nums[i]<=k)take=dp[i-1][k-nums[i]];
+                 dp[i][k]=(nottake)||(take);
+            }
+           
+        }
+  return dp[n-1][target];
     }
 };
